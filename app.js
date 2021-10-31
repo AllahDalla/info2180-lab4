@@ -11,7 +11,7 @@ function buttonFunction() {
 	
 	searchButton.addEventListener("click", async function(e){
 		e.target.preventDefault;
-		var query = document.getElementById("search-field-input").value;
+		var query = document.getElementById("search-field-input").value.trim().split(' ').join('');
 		var url = "superheroes.php?".concat(query);
 		var result_area = document.getElementById("result");
 
@@ -21,6 +21,7 @@ function buttonFunction() {
 			.then(async response => {
 				if(response.ok) {
 					var data = await response.json();
+					// var dataErrors = response.text();
 					var alias = document.createElement("h3");
 					var super_name = document.createElement("h4");
 					var biography = document.createElement("p");
@@ -37,7 +38,13 @@ function buttonFunction() {
 					result_area.appendChild(super_name);
 					result_area.appendChild(biography);
 
-					return console.log(data[0]);
+					alias.setAttribute('class', 'first-middle');
+					super_name.setAttribute('class', 'second-middle');
+					biography.setAttribute('class', 'third-middle');
+					result_area.setAttribute('class', 'third-middle');
+
+
+					return;
 				}else {
 					return Promise.reject("Something went wrong!")
 				}

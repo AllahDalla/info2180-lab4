@@ -1,7 +1,7 @@
 <?php
 
 $query_string = (string)$_SERVER['QUERY_STRING'];
-// echo $query_string;
+// print_r($_SERVER);
 // echo "Print superheroes array alias";
 
 $superheroes = [
@@ -67,21 +67,43 @@ $superheroes = [
   ], 
 ];
 function searchList($query) {
-  $list = $GLOBALS['superheroes'];
+
+  // $spaceError = "%20";
   
+  // $emptyError = [];
+
+  // if (empty($query)){
+  //   // foreach ($list as $fail) {
+  //   //   # code...
+  //   //   array_push($emptyError, $fail['name']);
+  //   // }
+  //   // header('Content-type: application/json');
+  //   // echo json_encode($emptyError);
+  //   return;
+  // }
+  $list = $GLOBALS['superheroes'];
   foreach($list as $superhero) {
     # code...
-    if ($superhero['alias'] == $query or $superhero['name'] == $query){
-      $data = [$superhero['alias'],$superhero['name'],$superhero['biography']];
+    if (str_replace(" ", "", $superhero['alias']) == $query or str_replace(" ", "", $superhero['name']) == $query){
+      $data = [$superhero['alias'],$superhero['name'],$superhero['biography'], $GLOBALS['query_string']];
       header('Content-type: application/json');
       echo json_encode($data);
+      // echo str_replace(" ", "", $superhero['alias']);
       return;
     }
   }
-  echo "Could not find query";
+
+  $error_results = [$query, "Could not find query", "Superhero not found", $GLOBALS['query_string']];
+  header('Content-type: application/json');
+  echo json_encode($error_results);
+  return;
+  // echo str_replace(" ", "", $superhero['alias']);
+  // echo $query;
 }
 
+
 searchList($query_string);
+// print_r($_SERVER);
 
 ?>
 
