@@ -1,5 +1,9 @@
 <?php
 
+$query_string = (string)$_SERVER['QUERY_STRING'];
+// echo $query_string;
+// echo "Print superheroes array alias";
+
 $superheroes = [
   [
       "id" => 1,
@@ -62,11 +66,25 @@ $superheroes = [
       "biography" => "Notably powerful, Wanda Maximoff has fought both against and with the Avengers, attempting to hone her abilities and do what she believes is right to help the world.",
   ], 
 ];
+function searchList($query) {
+  $list = $GLOBALS['superheroes'];
+  
+  foreach($list as $superhero) {
+    # code...
+    if ($superhero['alias'] == $query or $superhero['name'] == $query){
+      $data = [$superhero['alias'],$superhero['name'],$superhero['biography']];
+      header('Content-type: application/json');
+      echo json_encode($data);
+      return;
+    }
+  }
+  echo "Could not find query";
+}
+
+searchList($query_string);
 
 ?>
 
-<ul>
-<?php foreach ($superheroes as $superhero): ?>
-  <li><?= $superhero['alias']; ?></li>
-<?php endforeach; ?>
-</ul>
+
+
+
